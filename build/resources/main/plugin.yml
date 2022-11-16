@@ -1,0 +1,6 @@
+name: LevelZone
+version: '1.1'
+main: me.dominick.levelzone.WGAlonsoLevels
+api-version: 1.17
+depend: [ WorldGuard, AlonsoLevels ]
+author: Dominick12

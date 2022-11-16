@@ -1,0 +1,6 @@
+message: "&cYou must be of level <level> or higher to enter this region (message)"
+title: "&cYou must be of level <level> or higher to enter this region (title)"
+subtitle: "&cYou must be of level <level> or higher to enter this region (subtitle)"
+actionbar: "&cYou must be of level <level> or higher to enter this region (actionbar)"
+sound-block: "minecraft:block.amethyst_block.break"
+sound-enter: "minecraft:entity.arrow.hit_player"
