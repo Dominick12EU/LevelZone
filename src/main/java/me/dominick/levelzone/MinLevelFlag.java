@@ -56,6 +56,7 @@ public class MinLevelFlag extends Handler {
             if (!title.isEmpty() || !subtitle.isEmpty()) {
                 bukkitPlayer.sendTitle(CommandUtils.replaceColorMacros(title.replace("<level>", String.valueOf(levelRequired))), CommandUtils.replaceColorMacros(subtitle.replace("<level>", String.valueOf(levelRequired))), 0, 20 * 2, 10);
             }
+            WGAlonsoLevels.debug(String.format("Not allowed: from %.02f,%.02f,%.02f to %.02f,%.02f,%.02f", from.getX(), from.getY(), from.getZ(), to.getX(), to.getY(), to.getZ()));
 
             String actionbar = config.getString("actionbar");
             if (actionbar != null && !actionbar.isEmpty()) {
