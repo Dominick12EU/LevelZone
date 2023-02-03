@@ -1,5 +1,6 @@
 package me.dominick.levelzone;
 
+import me.dominick.levelzone.commands.Reload;
 import me.dominick.levelzone.metrics.bStats;
 
 import com.sk89q.worldguard.WorldGuard;
@@ -8,6 +9,7 @@ import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.session.SessionManager;
 import me.dominick.levelzone.utils.UpdaterChecker;
+import me.mattstudios.mf.base.CommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class WGAlonsoLevels extends JavaPlugin {
@@ -32,6 +34,9 @@ public final class WGAlonsoLevels extends JavaPlugin {
         SessionManager sessionManager = WorldGuard.getInstance().getPlatform().getSessionManager();
         sessionManager.registerHandler(MinLevelFlag.FACTORY, null);
 
+        CommandManager commandManager = new CommandManager(this, true);
+        commandManager.register(new Reload(this));
+
         getLogger().info("----------------------------------------");
         getLogger().info("");
         getLogger().info(getDescription().getName() + " Enabled!");
@@ -53,6 +58,10 @@ public final class WGAlonsoLevels extends JavaPlugin {
                 getLogger().warning("********************************************************************************");
             }
         });
+    }
+
+    public void onReload() {
+        reloadConfig();
     }
 
     /* package-private*/ static void debug(String log) {

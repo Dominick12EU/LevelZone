@@ -1,9 +1,11 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
 group = 'me.dominick.levelzone'
-version = '1.2'
+version = '1.3'
+description("LevelZone")
 
 repositories {
     mavenCentral()
@@ -13,16 +15,20 @@ repositories {
     maven {
         url = 'https://maven.enginehub.org/repo/'
     }
+    maven {
+        url = 'https://jitpack.io'
+    }
 }
 
 dependencies {
+    implementation 'me.mattstudios.utils:matt-framework:1.4.4'
     compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.0'
     compileOnly files('libs/AlonsoLevels-v2.2.4-BETA.jar')
 }
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(17)
+    toolchain.languageVersion = JavaLanguageVersion.of(8)
 }
 
 processResources {
@@ -32,4 +38,10 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+}
+
+shadowJar {
+    minimize()
+    archiveFileName = "${project.description}-${project.version}.jar"
+    relocate 'me.mattstudios.mf', 'me.dominick.levelzone.libs.command'
 }
