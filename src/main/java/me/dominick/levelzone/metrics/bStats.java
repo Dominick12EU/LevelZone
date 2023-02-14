@@ -38,13 +38,6 @@ public class bStats {
 
     private final MetricsBase metricsBase;
 
-    /**
-     * Creates a new Metrics instance.
-     *
-     * @param plugin Your plugin instance.
-     * @param serviceId The id of the service. It can be found at <a
-     *     href="https://bstats.org/what-is-my-plugin-id">What is my plugin id?</a>
-     */
     public bStats(Plugin plugin, int serviceId) {
         this.plugin = plugin;
         // Get the config file
@@ -95,11 +88,6 @@ public class bStats {
                         logResponseStatusText);
     }
 
-    /**
-     * Adds a custom chart.
-     *
-     * @param chart The chart to add.
-     */
     public void addCustomChart(CustomChart chart) {
         metricsBase.addCustomChart(chart);
     }
@@ -122,15 +110,11 @@ public class bStats {
 
     private int getPlayerAmount() {
         try {
-            // Around MC 1.8 the return type was changed from an array to a collection,
-            // This fixes java.lang.NoSuchMethodError:
-            // org.bukkit.Bukkit.getOnlinePlayers()Ljava/util/Collection;
             Method onlinePlayersMethod = Class.forName("org.bukkit.Server").getMethod("getOnlinePlayers");
             return onlinePlayersMethod.getReturnType().equals(Collection.class)
                     ? ((Collection<?>) onlinePlayersMethod.invoke(Bukkit.getServer())).size()
                     : ((Player[]) onlinePlayersMethod.invoke(Bukkit.getServer())).length;
         } catch (Exception e) {
-            // Just use the new method if the reflection failed
             return Bukkit.getOnlinePlayers().size();
         }
     }
@@ -173,27 +157,6 @@ public class bStats {
 
         private final boolean enabled;
 
-        /**
-         * Creates a new MetricsBase class instance.
-         *
-         * @param platform The platform of the service.
-         * @param serviceId The id of the service.
-         * @param serverUuid The server uuid.
-         * @param enabled Whether or not data sending is enabled.
-         * @param appendPlatformDataConsumer A consumer that receives a {@code JsonObjectBuilder} and
-         *     appends all platform-specific data.
-         * @param appendServiceDataConsumer A consumer that receives a {@code JsonObjectBuilder} and
-         *     appends all service-specific data.
-         * @param submitTaskConsumer A consumer that takes a runnable with the submit task. This can be
-         *     used to delegate the data collection to a another thread to prevent errors caused by
-         *     concurrency. Can be {@code null}.
-         * @param checkServiceEnabledSupplier A supplier to check if the service is still enabled.
-         * @param errorLogger A consumer that accepts log message and an error.
-         * @param infoLogger A consumer that accepts info log messages.
-         * @param logErrors Whether or not errors should be logged.
-         * @param logSentData Whether or not the sent data should be logged.
-         * @param logResponseStatusText Whether or not the response status text should be logged.
-         */
         public MetricsBase(
                 String platform,
                 String serverUuid,
@@ -223,7 +186,6 @@ public class bStats {
             this.logResponseStatusText = logResponseStatusText;
             checkRelocation();
             if (enabled) {
-                // WARNING: Removing the option to opt-out will get your plugin banned from bStats
                 startSubmitting();
             }
         }
@@ -246,13 +208,6 @@ public class bStats {
                             this.submitData();
                         }
                     };
-            // Many servers tend to restart at a fixed time at xx:00 which causes an uneven distribution
-            // of requests on the
-            // bStats backend. To circumvent this problem, we introduce some randomness into the initial
-            // and second delay.
-            // WARNING: You must not modify and part of this Metrics class, including the submit delay or
-            // frequency!
-            // WARNING: Modifying this code will get your plugin banned on bStats. Just don't do it!
             long initialDelay = (long) (1000 * 60 * (3 + Math.random() * 3));
             long secondDelay = (long) (1000 * 60 * (Math.random() * 30));
             scheduler.schedule(submitTask, initialDelay, TimeUnit.MILLISECONDS);
@@ -279,10 +234,8 @@ public class bStats {
             scheduler.execute(
                     () -> {
                         try {
-                            // Send the data
                             sendData(data);
                         } catch (Exception e) {
-                            // Something went wrong! :(
                             if (logErrors) {
                                 errorLogger.accept("Could not submit bStats metrics data", e);
                             }
@@ -296,7 +249,6 @@ public class bStats {
             }
             String url = String.format(REPORT_URL, platform);
             HttpsURLConnection connection = (HttpsURLConnection) new URL(url).openConnection();
-            // Compress the data to save bandwidth
             byte[] compressedData = compress(data.toString());
             connection.setRequestMethod("POST");
             connection.addRequestProperty("Accept", "application/json");
@@ -324,11 +276,8 @@ public class bStats {
 
         /** Checks that the class was properly relocated. */
         private void checkRelocation() {
-            // You can use the property to disable the check in your test environment
             if (System.getProperty("bstats.relocatecheck") == null
                     || !System.getProperty("bstats.relocatecheck").equals("false")) {
-                // Maven's Relocate is clever and changes strings, too. So we have to use this little
-                // "trick" ... :D
                 final String defaultPackage =
                         new String(new byte[] {'o', 'r', 'g', '.', 'b', 's', 't', 'a', 't', 's'});
                 final String examplePackage =

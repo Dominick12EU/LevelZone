@@ -37,7 +37,7 @@ public class MinLevelFlag extends Handler {
 
     @Override
     public boolean onCrossBoundary(LocalPlayer player, Location from, Location to, ApplicableRegionSet toSet, Set<ProtectedRegion> entered, Set<ProtectedRegion> exited, MoveType moveType) {
-        int levelRequired = toSet.queryAllValues(player, WGAlonsoLevels.MIN_LEVEL).stream().max(Integer::compareTo).orElse(0);
+        int levelRequired = toSet.queryAllValues(player, WGAlonsoLevels.MIN_LEVEL).stream().max(Integer::compareTo).orElse(-1);
         boolean allowed = levelRequired <= AlonsoLevelsAPI.getLevel(player.getUniqueId());
 
         WGAlonsoLevels plugin = WGAlonsoLevels.getPlugin(WGAlonsoLevels.class);
