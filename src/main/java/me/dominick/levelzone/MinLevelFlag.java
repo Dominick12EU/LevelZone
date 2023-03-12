@@ -40,8 +40,8 @@ public class MinLevelFlag extends Handler {
         int levelRequired = toSet.queryAllValues(player, WGAlonsoLevels.MIN_LEVEL).stream().max(Integer::compareTo).orElse(-1);
         boolean allowed = levelRequired <= AlonsoLevelsAPI.getLevel(player.getUniqueId());
 
-        WGAlonsoLevels plugin = WGAlonsoLevels.getPlugin(WGAlonsoLevels.class);
-        FileConfiguration config = plugin.getConfig();
+        WGAlonsoLevels instance = WGAlonsoLevels.getInstance();
+        FileConfiguration config = instance.getConfig();
         Player bukkitPlayer = BukkitAdapter.adapt(player);
         if (!getSession().getManager().hasBypass(player, (World) to.getExtent()) && !allowed && moveType.isCancellable()) {
             String message = config.getString("message");

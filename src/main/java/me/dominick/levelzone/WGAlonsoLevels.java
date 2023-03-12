@@ -13,7 +13,17 @@ import me.mattstudios.mf.base.CommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class WGAlonsoLevels extends JavaPlugin {
+
+    private static WGAlonsoLevels instance;
     public static IntegerFlag MIN_LEVEL;
+
+    public WGAlonsoLevels() {
+        instance = this;
+    }
+
+    public static WGAlonsoLevels getInstance() {
+        return instance;
+    }
 
     @Override
     public void onLoad() {
