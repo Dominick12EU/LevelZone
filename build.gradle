@@ -1,10 +1,10 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
 group = 'me.dominick.levelzone'
-version = 'Dev-1.5'
+version = '1.5'
 description("LevelZone")
 
 repositories {
@@ -18,17 +18,21 @@ repositories {
     maven {
         url = 'https://jitpack.io'
     }
+    maven {
+        url = 'https://nexus.phoenixdevt.fr/repository/maven-public/'
+    }
 }
 
 dependencies {
     implementation 'me.mattstudios.utils:matt-framework:1.4.4'
     compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.0'
+    compileOnly 'net.Indyuce:MMOCore-API:1.11.3-SNAPSHOT'
     compileOnly files('libs/AlonsoLevels-v2.2.4-BETA.jar')
 }
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(8)
+    toolchain.languageVersion = JavaLanguageVersion.of(16)
 }
 
 processResources {

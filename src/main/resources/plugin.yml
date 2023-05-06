@@ -2,7 +2,8 @@ name: LevelZone
 version: '${version}'
 main: me.dominick.levelzone.WGAlonsoLevels
 api-version: 1.17
-depend: [ WorldGuard, AlonsoLevels ]
+depend: [ WorldGuard ]
+softdepend: [ AlonsoLevels, MMOCore ]
 author: Dominick12
 
 permissions:

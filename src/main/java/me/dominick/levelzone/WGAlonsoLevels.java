@@ -16,6 +16,7 @@ public final class WGAlonsoLevels extends JavaPlugin {
 
     private static WGAlonsoLevels instance;
     public static IntegerFlag MIN_LEVEL;
+    public static IntegerFlag MIN_CLASS_LEVEL;
 
     public WGAlonsoLevels() {
         instance = this;
@@ -29,9 +30,16 @@ public final class WGAlonsoLevels extends JavaPlugin {
     public void onLoad() {
         FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
         try {
-            IntegerFlag flag = new IntegerFlag("min-level");
-            registry.register(flag);
-            MIN_LEVEL = flag;
+            if (instance.getServer().getPluginManager().isPluginEnabled("AlonsoLevels")) {
+                IntegerFlag flag = new IntegerFlag("min-level");
+                registry.register(flag);
+                MIN_LEVEL = flag;
+            }
+            if (instance.getServer().getPluginManager().isPluginEnabled("MMOCore")) {
+                IntegerFlag flag2 = new IntegerFlag("min-class-level");
+                registry.register(flag2);
+                MIN_CLASS_LEVEL = flag2;
+            }
         } catch (FlagConflictException e) {
             e.printStackTrace();
         }
@@ -42,7 +50,16 @@ public final class WGAlonsoLevels extends JavaPlugin {
         new bStats(this, 17364);
         saveDefaultConfig();
         SessionManager sessionManager = WorldGuard.getInstance().getPlatform().getSessionManager();
-        sessionManager.registerHandler(MinLevelFlag.FACTORY, null);
+
+
+        if (instance.getServer().getPluginManager().isPluginEnabled("AlonsoLevels")) {
+            sessionManager.registerHandler(MinLevelFlag.FACTORY, null);
+            getLogger().info("AlonsoLevels Support Enabled!");
+        }
+        if (instance.getServer().getPluginManager().isPluginEnabled("MMOCore")) {
+            sessionManager.registerHandler(MinClassLevelFlag.FACTORY, null);
+            getLogger().info("MMOCore Support Enabled!");
+        }
 
         CommandManager commandManager = new CommandManager(this, true);
         commandManager.register(new Reload(this));
