@@ -30,15 +30,15 @@ public final class WGAlonsoLevels extends JavaPlugin {
     public void onLoad() {
         FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
         try {
-            if (instance.getServer().getPluginManager().isPluginEnabled("AlonsoLevels")) {
-                IntegerFlag flag = new IntegerFlag("min-level");
-                registry.register(flag);
-                MIN_LEVEL = flag;
+            if (instance.getServer().getPluginManager().getPlugin("AlonsoLevels") != null) {
+                IntegerFlag ml = new IntegerFlag("min-level");
+                registry.register(ml);
+                MIN_LEVEL = ml;
             }
-            if (instance.getServer().getPluginManager().isPluginEnabled("MMOCore")) {
-                IntegerFlag flag2 = new IntegerFlag("min-class-level");
-                registry.register(flag2);
-                MIN_CLASS_LEVEL = flag2;
+            if (instance.getServer().getPluginManager().getPlugin("MMOCore") != null) {
+                IntegerFlag mcl = new IntegerFlag("min-class-level");
+                registry.register(mcl);
+                MIN_CLASS_LEVEL = mcl;
             }
         } catch (FlagConflictException e) {
             e.printStackTrace();
@@ -51,12 +51,11 @@ public final class WGAlonsoLevels extends JavaPlugin {
         saveDefaultConfig();
         SessionManager sessionManager = WorldGuard.getInstance().getPlatform().getSessionManager();
 
-
-        if (instance.getServer().getPluginManager().isPluginEnabled("AlonsoLevels")) {
+        if (instance.getServer().getPluginManager().getPlugin("AlonsoLevels") != null) {
             sessionManager.registerHandler(MinLevelFlag.FACTORY, null);
             getLogger().info("AlonsoLevels Support Enabled!");
         }
-        if (instance.getServer().getPluginManager().isPluginEnabled("MMOCore")) {
+        if (instance.getServer().getPluginManager().getPlugin("MMOCore") != null) {
             sessionManager.registerHandler(MinClassLevelFlag.FACTORY, null);
             getLogger().info("MMOCore Support Enabled!");
         }
