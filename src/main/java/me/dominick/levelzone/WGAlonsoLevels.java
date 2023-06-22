@@ -1,6 +1,6 @@
 package me.dominick.levelzone;
 
-import me.dominick.levelzone.commands.Reload;
+import me.dominick.levelzone.commands.CommandsLevelZ;
 import me.dominick.levelzone.metrics.bStats;
 
 import com.sk89q.worldguard.WorldGuard;
@@ -8,6 +8,7 @@ import com.sk89q.worldguard.protection.flags.IntegerFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.session.SessionManager;
+import me.dominick.levelzone.utils.ConfigManager;
 import me.dominick.levelzone.utils.UpdaterChecker;
 import me.mattstudios.mf.base.CommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,6 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class WGAlonsoLevels extends JavaPlugin {
 
     private static WGAlonsoLevels instance;
+    private ConfigManager configManager;
     public static IntegerFlag MIN_LEVEL;
     public static IntegerFlag MIN_CLASS_LEVEL;
 
@@ -48,7 +50,10 @@ public final class WGAlonsoLevels extends JavaPlugin {
     @Override
     public void onEnable() {
         new bStats(this, 17364);
-        saveDefaultConfig();
+
+        configManager = new ConfigManager(this);
+        configManager.loadConfig();
+
         SessionManager sessionManager = WorldGuard.getInstance().getPlatform().getSessionManager();
 
         if (instance.getServer().getPluginManager().getPlugin("AlonsoLevels") != null) {
@@ -61,7 +66,7 @@ public final class WGAlonsoLevels extends JavaPlugin {
         }
 
         CommandManager commandManager = new CommandManager(this, true);
-        commandManager.register(new Reload(this));
+        commandManager.register(new CommandsLevelZ(this));
 
         getLogger().info("----------------------------------------");
         getLogger().info("");

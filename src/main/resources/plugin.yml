@@ -9,3 +9,5 @@ author: Dominick12
 permissions:
   levelzone.admin:
     default: op
+  levelzone.stats:
+    default: op

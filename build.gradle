@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.dominick.levelzone'
-version = '1.5-hotfix'
+version = '1.6'
 description("LevelZone")
 
 repositories {
